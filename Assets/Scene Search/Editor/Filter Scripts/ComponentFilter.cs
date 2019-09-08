@@ -24,7 +24,6 @@ namespace SceneSearch.Filters
             IncludesOneOrMore, //has one or more of the items on the list
 
             DoesNotIncludeOne, //doesn't include one of the items on the list
-            DoesNotIncludeOneOrMore //doesn't include one or more of the items on the list
         }
         /// <summary>
         /// Used to hold component info 
@@ -137,9 +136,6 @@ namespace SceneSearch.Filters
                 case Inclusivity.IncludesOneOrMore:
                     TestMethod = IncludesOneOrMore;
                     break;
-                case Inclusivity.DoesNotIncludeOneOrMore:
-                    TestMethod = DoesNotIncludeOneOrMore;
-                    break;
                 case Inclusivity.DoesNotIncludeOne:
                     TestMethod = DoesNotIncludeOne;
                     break;
@@ -171,10 +167,6 @@ namespace SceneSearch.Filters
         public bool DoesNotIncludeOne(GameObject gameObject)
         {
             return MatchesCount(GetComponentInfo(gameObject)) == info.Count - 1;
-        }
-        public bool DoesNotIncludeOneOrMore(GameObject gameObject)
-        {
-            return MatchesCount(GetComponentInfo(gameObject)) < info.Count;
         }
         public bool DoesNotIncludeAny(GameObject gameObject)
         {
