@@ -71,9 +71,32 @@ namespace SceneSearch
             /// Removes a filter or filter group from the group
             /// </summary>
             /// <param name="searchFilter">Filter or filter group to remove</param>
-            public void Remove(SearchFilter searchFilter)
+            public bool Remove(SearchFilter searchFilter)
             {
-                searchFilters.Remove(searchFilter);
+                SearchFilterGroup testGroup = searchFilter as SearchFilterGroup;
+                if (testGroup != null) { return Remove(testGroup); }
+                else
+                {
+                    if (searchFilter == null) return false;
+                    if (searchFilters.Remove(searchFilter)) return true;
+                    for (int i = 0; i < searchFilters.Count; i++)
+                    {
+                        SearchFilterGroup testSubGroup = searchFilters[i] as SearchFilterGroup;
+                        if (testSubGroup != null && testSubGroup.Remove(searchFilter)) return true;
+                    }
+                    return false;
+                }
+            }
+            public bool Remove(SearchFilterGroup group)
+            {
+                if (group == this || group == null) return false;
+                if (searchFilters.Remove(group)) return true;
+                for (int i = 0; i < searchFilters.Count; i++)
+                {
+                    SearchFilterGroup testGroup = searchFilters[i] as SearchFilterGroup;
+                    if (testGroup != null && testGroup.Remove(group)) return true;
+                }
+                return false;
             }
             /// <summary>
             /// Checks if this group already contains a group
